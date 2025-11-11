@@ -1,11 +1,4 @@
-#:sdk Microsoft.NET.Sdk.Web
-
-#:package Microsoft.Agents.AI.DevUI@1.0.0-preview.251110.2
-#:package Microsoft.Agents.AI.Hosting@1.0.0-preview.251110.2
-#:package Microsoft.Agents.AI.Hosting.OpenAI@1.0.0-alpha.251110.2
-#:package Microsoft.Extensions.AI@9.10.2
-#:package Azure.Identity@1.17.0
-#:package Azure.AI.OpenAI@2.5.0-beta.1
+﻿
 
 using Azure;
 using Azure.AI.OpenAI;
@@ -44,10 +37,10 @@ var app = builder.Build();
 app.MapOpenAIResponses();
 app.MapOpenAIConversations();
 
-if (builder.Environment.IsDevelopment())
-{
+// if (builder.Environment.IsDevelopment())
+// {
     // Map DevUI endpoint to /devui
     app.MapDevUI();
-}
+// }
 
 app.Run();
