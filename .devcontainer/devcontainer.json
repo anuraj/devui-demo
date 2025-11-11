@@ -15,15 +15,11 @@
     }
   },
   "portsAttributes": {
-    "5000": {
+    "8080": {
       "onAutoForward": "notify"
-    },
-    "5001": {
-      "protocol": "https"
     }
   },
   "forwardPorts": [
-    5000,
-    5001
-  ],
+    8080
+  ]
 }
