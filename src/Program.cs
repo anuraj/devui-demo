@@ -1,11 +1,8 @@
-﻿
-
-using Azure;
+﻿using Azure;
 using Azure.AI.OpenAI;
 using Microsoft.Agents.AI.DevUI;
 using Microsoft.Agents.AI.Hosting;
 using Microsoft.Extensions.AI;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
