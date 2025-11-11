@@ -25,7 +25,7 @@ var openAIOptions = new OpenAIClientOptions()
 };
 
 var githubModelsClient = new OpenAIClient(credential, openAIOptions);
-var chatClient = githubModelsClient.GetChatClient("gpt-4o-mini").AsIChatClient();
+var chatClient = githubModelsClient.GetChatClient("gpt-5-mini").AsIChatClient();
 
 // Set up the chat client
 builder.Services.AddChatClient(chatClient);
