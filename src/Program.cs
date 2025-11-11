@@ -1,28 +1,36 @@
-﻿using Azure;
-using Azure.AI.OpenAI;
+﻿using System.ClientModel;
 using Microsoft.Agents.AI.DevUI;
 using Microsoft.Agents.AI.Hosting;
 using Microsoft.Extensions.AI;
+using OpenAI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+builder.Configuration.AddUserSecrets<Program>();
+
+var token = builder.Configuration["GITHUB_TOKEN"];
 if (string.IsNullOrEmpty(token))
 {
     throw new InvalidOperationException("GITHUB_TOKEN is not set.");
 }
 
-var endpoint = new Uri("https://models.github.ai/inference");
-var credential = new AzureKeyCredential(token);
-var model = "openai/gpt-5-mini";
+var credential = new ApiKeyCredential(token);
+var openAIOptions = new OpenAIClientOptions()
+{
+    Endpoint = new Uri("https://models.inference.ai.azure.com")
+};
 
-var chatClient = new AzureOpenAIClient(endpoint, credential).GetChatClient(model).AsIChatClient();
+var githubModelsClient = new OpenAIClient(credential, openAIOptions);
+var chatClient = githubModelsClient.GetChatClient("gpt-4o-mini").AsIChatClient();
 
 // Set up the chat client
 builder.Services.AddChatClient(chatClient);
 
 // Register your agents
-builder.AddAIAgent("my-agent", "You are a helpful assistant.");
+builder.AddAIAgent("assistant", "You are a helpful assistant.");
 
 // Register services for OpenAI responses and conversations (also required for DevUI)
 builder.Services.AddOpenAIResponses();
@@ -34,10 +42,7 @@ var app = builder.Build();
 app.MapOpenAIResponses();
 app.MapOpenAIConversations();
 
-// if (builder.Environment.IsDevelopment())
-// {
-    // Map DevUI endpoint to /devui
-    app.MapDevUI();
-// }
+// Map DevUI endpoint to /devui
+app.MapDevUI();
 
 app.Run();
